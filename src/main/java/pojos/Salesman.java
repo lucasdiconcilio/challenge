@@ -3,7 +3,7 @@ package pojos;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Salesman implements Data{
+public class Salesman {
 
     private String cpf;
     private String name;
@@ -14,6 +14,7 @@ public class Salesman implements Data{
         this.cpf = cpf;
         this.name = name;
         this.salary = salary;
+        double amountSold = getAmountSold();
     }
 
     public void addSale(Sale sale){
@@ -22,6 +23,14 @@ public class Salesman implements Data{
 
     public String getName(){
         return name;
+    }
+
+    public double getAmountSold(){
+        double calculateAmount= 0;
+        for (Sale sale:saleList
+             ) { calculateAmount = calculateAmount + sale.getSalePrice();
+        }
+        return calculateAmount;
     }
 
 

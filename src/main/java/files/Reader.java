@@ -6,23 +6,27 @@ import java.io.*;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class Reader {
+public class Reader{
 
     private static final String SALESMAN = "001";
     private static final String CUSTOMER = "002";
     private static final String SALE = "003";
+    private static final char INFORMATIONSPLITTER = 'ç';
+    private static File file;
     private static List<Customer> customerList = new ArrayList<>();
     private static List<Salesman> salesmanList = new ArrayList<>();
-    private static List<Sale> saleList = new ArrayList<>();
-    private static Map<String, Supplier<Data>> operationsMap = new HashMap<>();
+
+    public Reader(File file){
+        this.file = file;
+    }
 
 
-    public void reader() throws IOException {
+    public void analyser() throws IOException {
 
         FileInputStream inputStream = null;
         Scanner scanner = null;
         try {
-            inputStream = new FileInputStream("test.dat");
+            inputStream = new FileInputStream(file);
             scanner = new Scanner(inputStream, "UTF-8");
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -30,8 +34,6 @@ public class Reader {
                 for (int i = 0; i < data.length; i++) {
                     createObject(data[i].trim());
                 }
-
-
             }
             if (scanner.ioException() != null) {
                 throw scanner.ioException();
@@ -51,7 +53,7 @@ public class Reader {
 
 
     public void createObject(String data) {
-        String[] dataSplit = data.split("ç");
+        String[] dataSplit = data.split(String.valueOf(INFORMATIONSPLITTER));
         switch (dataSplit[0]) {
 
             case SALESMAN:
@@ -77,7 +79,7 @@ public class Reader {
 
     public List<Item> createItemList(String itensString) {
         List<Item> itemList = new ArrayList<>();
-        itensString = (itensString.substring(1,itensString.length()-1));
+        itensString = (itensString.substring(1, itensString.length() - 1));
         String[] itemSplit = itensString.split(",");
         for (int i = 0; i < itemSplit.length; i++) {
             itemList.add(createItem(itemSplit[i]));
@@ -92,6 +94,16 @@ public class Reader {
         }
         return null;
     }
+
+    public static int getNumberOfSalesMan(){
+        return salesmanList.size();
+    }
+
+    public static int getNumberOfClients(){
+        return customerList.size();
+    }
+
+
 
 
 }
